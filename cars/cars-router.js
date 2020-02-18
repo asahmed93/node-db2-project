@@ -2,13 +2,15 @@ const express = require("express");
 
 const router = express.Router();
 
+const db = require('../data/dbConfig')
+
 router.get("/", (req, res) => {
   db("cars")
-    .then(fruits => {
-      res.json(fruits);
+    .then(cars => {
+      res.json(cars);
     })
     .catch(err => {
-      res.status(500).json({ message: "Failed to retrieve fruits" });
+      res.status(500).json({ message: "Failed to retrieve cars" });
     });
 });
 
@@ -18,23 +20,23 @@ router.get("/:id", (req, res) => {
   db("cars")
     .where({ id })
     .first()
-    .then(fruit => {
-      res.json(fruit);
+    .then(cars => {
+      res.json(cars);
     })
     .catch(err => {
-      res.status(500).json({ message: "Failed to retrieve fruit" });
+      res.status(500).json({ message: "Failed to retrieve cars" });
     });
 });
 
 router.post("/", (req, res) => {
-  const fruitData = req.body;
+  const carData = req.body;
   db("cars")
-    .insert(fruitData)
+    .insert(carData)
     .then(ids => {
       db("cars")
         .where({ id: ids[0] })
-        .then(newFruitEntry => {
-          res.status(201).json(newFruitEntry);
+        .then(newCarEntry => {
+          res.status(201).json(newCarEntry);
         });
     })
     .catch(err => {
